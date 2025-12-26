@@ -19,3 +19,9 @@ def sort_by_date(list_of_dicts: list, sort_type_forward: bool = True) -> list[An
     sorted_list = sorted(list_of_dicts, key=lambda d: d["date"], reverse=sort_type_forward)
     return sorted_list
 
+def sort_by_date(list_of_dicts: list, sort_type_forward: bool = True) -> list[Any]:
+    """Функция принимает список словарей и необязательный параметр,
+     задающий порядок сортировки (по умолчанию — убывание).
+    Функция возвращает новый список, отсортированный по дате"""
+    sorted_list = sorted(list_of_dicts, key=lambda d: d["date"], reverse=sort_type_forward)
+    return sorted_list
