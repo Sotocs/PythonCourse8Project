@@ -1,13 +1,20 @@
+from typing import Optional, Any
 
 
-def filter_by_state(list_of_dicts, argument='EXECUTED'):
+def filter_by_state(list_of_dicts: list, argument: Optional[str] = "EXECUTED") -> list[Any]:
+    """Функция принимает список словарей и опционально значение для ключа state (по умолчанию 'EXECUTED').
+    Функция возвращает новый список словарей, содержащий только те словари, у которых ключ
+    state соответствует указанному значению."""
     filtered_list = []
     for d in list_of_dicts:
-        if d['state'] == argument:
+        if d["state"] == argument:
             filtered_list.append(d)
     return filtered_list
 
-print(filter_by_state([{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'}, {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]))
-print(filter_by_state([{'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'}, {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}], argument='CANCELED'))
 
-
+def sort_by_date(list_of_dicts: list, sort_type_forward: bool = True) -> list[Any]:
+    """Функция принимает список словарей и необязательный параметр,
+     задающий порядок сортировки (по умолчанию — убывание).
+    Функция возвращает новый список, отсортированный по дате"""
+    sorted_list = sorted(list_of_dicts, key=lambda d: d["date"], reverse=sort_type_forward)
+    return sorted_list
