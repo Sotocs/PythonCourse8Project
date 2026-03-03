@@ -18,4 +18,3 @@ def sort_by_date(list_of_dicts: list, sort_type_forward: bool = True) -> list[An
     Функция возвращает новый список, отсортированный по дате"""
     sorted_list = sorted(list_of_dicts, key=lambda d: d["date"], reverse=sort_type_forward)
     return sorted_list
-
