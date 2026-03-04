@@ -1,3 +1,4 @@
+from typing import Any
 
 
 def filter_by_state(list_of_dicts, argument='EXECUTED'):
