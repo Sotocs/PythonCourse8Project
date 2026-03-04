@@ -13,7 +13,6 @@ def get_mask_card_number(number: Union[str, int]) -> str:
         return str(number)[-16:-12] + " " + str(number)[-12:-10] + "** **** " + str(number)[-4:]
 
 
-
 def get_mask_account(number: Union[str, int]) -> str:
     """
     Маскирует номер счёта: все цифры, кроме последних 4, заменяются на звёздочки.
@@ -23,6 +22,4 @@ def get_mask_account(number: Union[str, int]) -> str:
     if len(number) != 16:
         raise ValueError("Неправильный формат")
     else:
-        return "**** " + str(number)[-4:]
-
-print(get_mask_card_number('1234 4344 3333 3456'))
+        return "**** " + number[-4:]

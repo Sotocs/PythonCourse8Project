@@ -6,11 +6,22 @@ def mask_account_card(name_number: str) -> str:
     Maestro 1596837868705199
     Счет 64686473678894779589
     Выводит замаскированную строку с маской в зависимости от выбора Счет или Карта"""
-    if name_number[:4] == "Счет" or name_number[:4] == "Счёт":
-        return str(get_mask_account(name_number[5:]))
+    name_number = str(name_number).split(' ')
+    if name_number[0] == "Счет" or name_number[0] == "Счёт":
+        return str(get_mask_account(name_number[-1]))
     else:
-        return str(get_mask_card_number(name_number.split(' ')[-1]))
+        return str(get_mask_card_number(name_number[-1]))
 
+
+# #for e in ['Maestro 1596837868705199',
+#           'Счет 64686473678894779589',
+#           'MasterCard 7158300734726758',
+#           'Счет 35383033474447895560',
+#           'Visa Classic 6831982476737658',
+#           'Visa Platinum 8990922113665229',
+#           'Visa Gold 5999414228426353',
+#           'Счет 73654108430135874305']:
+#     print(mask_account_card(e))
 
 
 def get_date(date: str) -> str:
@@ -20,3 +31,7 @@ def get_date(date: str) -> str:
         raise ValueError('Неправильный формат')
     else:
         return date[8:10] + "." + date[5:7] + "." + date[:4]
+
+
+# print(get_date('2024-03-11T02:26:18.671407'))
+
