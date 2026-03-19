@@ -1,13 +1,12 @@
-from typing import Optional, Any
+from typing import Any
 
 
-def filter_by_state(list_of_dicts: list, argument: Optional[str] = "EXECUTED") -> list[Any]:
-    """Функция принимает список словарей и опционально значение для ключа state (по умолчанию 'EXECUTED').
-    Функция возвращает новый список словарей, содержащий только те словари, у которых ключ
-    state соответствует указанному значению."""
+def filter_by_state(list_of_dicts, argument='EXECUTED'):
+    """Функция сортирует список словарей по ключевому слову.
+    По умолчанию EXECUTED. Выводит список подходящих словарей"""
     filtered_list = []
     for d in list_of_dicts:
-        if d["state"] == argument:
+        if d['state'] == argument:
             filtered_list.append(d)
     return filtered_list
 
