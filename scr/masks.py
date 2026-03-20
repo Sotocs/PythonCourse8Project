@@ -6,7 +6,7 @@ def get_mask_card_number(number: Union[str, int]) -> str:
     Маскирует номер карты: первые 6 цифр видны, с 7‑й по 12‑ю — звёздочки, последние 4 — видны.
     Формат: 1234 56** **** 3456
     """
-    number = ''.join(str(number).split(' '))
+    number = "".join(str(number).split(" "))
     if len(number) != 16:
         raise ValueError("Неправильный формат")
     else:
@@ -18,7 +18,7 @@ def get_mask_account(number: Union[str, int]) -> str:
     Маскирует номер счёта: все цифры, кроме последних 4, заменяются на звёздочки.
     Формат: (**** 1234).
     """
-    number = ''.join(str(number).split(' '))
+    number = "".join(str(number).split(" "))
     if len(number) != 16:
         raise ValueError("Неправильный формат")
     else:
