@@ -69,6 +69,22 @@ PythonCourse8Project/
 
 ---
 
+## Декоратор `log`
+
+Декоратор `log` автоматически логирует выполнение функций.
+
+- **Успешное выполнение:**  
+"Function {func.__name__} executed successfully with result {result}"
+
+- **При ошибке:**  
+"Function {func.__name__} raised exception {e} with arguments args {args}, kwargs {kwargs}"
+
+**Параметры:**
+- `filename` (необязательный) — путь к файлу для логов.  
+- Если указан, запись идёт в файл.  
+- Если не указан, вывод идёт в консоль.
+
+
 ## Пример использования
 
 ```python
@@ -137,6 +153,12 @@ for card in card_number_generator(1, 3):
     print(card)
 ```
 
+### Пример для Log:
+```python
+@log(filename="log.txt")
+def add(a, b):
+  return a + b
+```
 ---
 
 ## Технологии
