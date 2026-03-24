@@ -2,7 +2,7 @@ import functools
 from typing import Callable, Any, Optional
 
 
-def log(filename: Optional[str] = "console") -> Callable:
+def log(filename: Optional[str] = None) -> Callable:
     """
     Декоратор для логирования начала и конца выполнения функции, а также её результатов
     или возникших ошибок.
