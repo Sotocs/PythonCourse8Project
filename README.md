@@ -8,13 +8,33 @@
 
 ```
 PythonCourse8Project/
-├── scr/
-│   ├── masks.py        # Маскирование номеров карт и счетов
-│   ├── processing.py   # Фильтрация и сортировка операций
-│   ├── widget.py       # Форматирование и вывод данных
-│   ├── generators.py   # Генераторы для обработки данных
-│   └── __init__.py
-├── tests/              # Тесты для всех модулей
+├── data/
+│   └── operations.json        # JSON-файл с финансовыми транзакциями
+│
+├── scr/                       # Основной код проекта
+│   ├── __init__.py
+│   ├── decorators.py          # Декоратор log для логирования функций
+│   ├── external_api.py        # Работа с внешним API (конвертация валют)
+│   ├── generators.py          # Генераторы для обработки данных
+│   ├── main.py                # Точка входа / запуск программы
+│   ├── masks.py               # Маскирование карт и счетов
+│   ├── processing.py          # Фильтрация и сортировка операций
+│   ├── utils.py               # Загрузка данных из JSON
+│   └── widget.py              # Форматирование и вывод данных
+│
+├── tests/                     # Тесты (pytest)
+│   ├── __init__.py
+│   ├── test.py
+│   ├── test_decorators.py
+│   ├── test_external_api.py
+│   ├── test_generators.py
+│   ├── test_masks.py
+│   ├── test_processing.py
+│   ├── test_utils.py
+│   └── test_widget.py
+│
+├── htmlcov/                   # Отчёт покрытия (coverage)
+├── .env.example               # Шаблон переменных окружения
 ├── README.md
 └── requirements.txt
 ```
@@ -83,6 +103,8 @@ PythonCourse8Project/
 - `filename` (необязательный) — путь к файлу для логов.  
 - Если указан, запись идёт в файл.  
 - Если не указан, вывод идёт в консоль.
+
+
 
 
 ## Пример использования
