@@ -23,5 +23,3 @@ def load_transactions(path: str) -> list:
         # Если файл поврежден, пустой или кодировка неправильная
         return []
 
-
-# print(load_transactions("../data/operations.json"))

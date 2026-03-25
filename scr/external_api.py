@@ -32,13 +32,3 @@ def convertation(transaction: dict) -> float:
 
     raise ValueError(f"Неизвестная валюта: {currency}")
 
-
-# # Открываем файл и загружаем данные
-# with open("../data/operations.json", "r", encoding="utf-8") as f:
-#     transactions = json.load(f)  # transactions — это список словарей
-#
-# # Пример: берём первую транзакцию из файла
-# first_transaction = transactions[1]
-#
-# # Конвертируем в рубли
-# print(convertation(first_transaction))
