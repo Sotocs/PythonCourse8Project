@@ -31,4 +31,3 @@ def convertation(transaction: dict) -> float:
         return float(data.get("result", 0))
 
     raise ValueError(f"Неизвестная валюта: {currency}")
-
