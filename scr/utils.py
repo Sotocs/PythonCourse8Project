@@ -5,8 +5,8 @@ logger = logging.getLogger(__name__)
 file_handler = logging.FileHandler("../logs", mode="w")
 file_formatter = logging.Formatter("%(asctime)s %(filename)s %(levelname)s: %(message)s")
 file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
 
-logging.basicConfig(level=logging.DEBUG)
 
 def load_transactions(path: str) -> list:
     """
@@ -15,7 +15,7 @@ def load_transactions(path: str) -> list:
       транзакциях. Если файл пустой, содержит не список
        или не найден, функция возвращает пустой список.
     """
-    logger.addHandler(file_handler)
+
     logger.debug("Программа запущена")
     try:
         # Открываем файл с правильной кодировкой
@@ -27,10 +27,10 @@ def load_transactions(path: str) -> list:
             logger.debug("Проверка на список в исходном файле пройдена")
             return data
         else:
-            logger.warning("Проверка на список в исходном файле не пройдена," " возвращается пустой список")
+            logger.error("Проверка на список в исходном файле не пройдена," " возвращается пустой список")
             return []  # Если не список, возвращаем пустой
 
     except (json.JSONDecodeError, UnicodeDecodeError, IOError):
         # Если файл поврежден, пустой или кодировка неправильная
-        logger.warning("Файл поврежден, пустой или кодировка неправильная, возвращается пустой список")
+        logger.error("Файл поврежден, пустой или кодировка неправильная, возвращается пустой список")
         return []
