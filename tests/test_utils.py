@@ -1,43 +1,114 @@
-import pytest
+from unittest.mock import patch, mock_open
 import json
+import pandas as pd
+
 from scr.utils import load_transactions
 
 
-# --- Создаём временные файлы для теста ---
-@pytest.fixture
-def tmp_json_file(tmp_path):
-    file_path = tmp_path / "transactions.json"
-    return file_path
+# =========================
+# JSON ТЕСТЫ
+# =========================
 
 
-def test_valid_list(tmp_json_file):
-    data = [{"id": 1, "amount": 1000}, {"id": 2, "amount": 2000}]
-    tmp_json_file.write_text(json.dumps(data), encoding="utf-8")
+def test_json_valid_list():
+    data = [{"id": 1}, {"id": 2}]
 
-    result = load_transactions(str(tmp_json_file))
+    with patch("builtins.open", mock_open(read_data=json.dumps(data))):
+        result = load_transactions("file.json")
+
     assert result == data
 
 
-def test_empty_file(tmp_json_file):
-    tmp_json_file.write_text("", encoding="utf-8")
-    result = load_transactions(str(tmp_json_file))
+def test_json_not_list():
+    data = {"id": 1}
+
+    with patch("builtins.open", mock_open(read_data=json.dumps(data))):
+        result = load_transactions("file.json")
+
     assert result == []
 
 
-def test_not_a_list(tmp_json_file):
-    data = {"id": 1, "amount": 1000}  # словарь вместо списка
-    tmp_json_file.write_text(json.dumps(data), encoding="utf-8")
-    result = load_transactions(str(tmp_json_file))
+def test_json_empty():
+    with patch("builtins.open", mock_open(read_data="")):
+        result = load_transactions("file.json")
+
     assert result == []
+
+
+def test_json_invalid():
+    with patch("builtins.open", mock_open(read_data="{bad json}")):
+        result = load_transactions("file.json")
+
+    assert result == []
+
+
+# =========================
+# CSV ТЕСТЫ
+# =========================
+
+
+def test_csv_valid():
+    csv_data = "id,amount\n1,100\n2,200\n"
+
+    with patch("builtins.open", mock_open(read_data=csv_data)):
+        result = load_transactions("file.csv")
+
+    expected = [
+        {"id": "1", "amount": "100"},
+        {"id": "2", "amount": "200"},
+    ]
+
+    assert result == expected
+
+
+def test_csv_empty():
+    with patch("builtins.open", mock_open(read_data="")):
+        result = load_transactions("file.csv")
+
+    assert result == []
+
+
+# =========================
+# XLSX ТЕСТЫ
+# =========================
+
+
+def test_xlsx_valid():
+    df = pd.DataFrame(
+        [
+            {"id": 1, "amount": 100},
+            {"id": 2, "amount": 200},
+        ]
+    )
+
+    with patch("pandas.read_excel", return_value=df):
+        result = load_transactions("file.xlsx")
+
+    expected = df.to_dict("records")
+    assert result == expected
+
+
+def test_xlsx_empty():
+    df = pd.DataFrame()
+
+    with patch("pandas.read_excel", return_value=df):
+        result = load_transactions("file.xlsx")
+
+    assert result == []
+
+
+# =========================
+# ОБЩИЕ ТЕСТЫ
+# =========================
 
 
 def test_file_not_found():
-    result = load_transactions("non_existent_file.json")
+    with patch("builtins.open", side_effect=FileNotFoundError):
+        result = load_transactions("file.json")
+
     assert result == []
 
 
-def test_invalid_json(tmp_path):
-    file_path = tmp_path / "invalid.json"
-    file_path.write_text("{invalid: json}", encoding="utf-8")  # некорректный JSON
-    result = load_transactions(str(file_path))
+def test_unknown_format():
+    result = load_transactions("file.txt")
     assert result == []
