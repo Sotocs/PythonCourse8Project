@@ -1,7 +1,10 @@
+from typing import Any
+
 from scr.masks import get_mask_account, get_mask_card_number
+from datetime import datetime
 
 
-def mask_account_card(name_number: list) -> str:
+def mask_account_card(name_number: list[str] | str) -> str:
     """Принимает строку с содержанием имени: карта или счет
     Maestro 1596837868705199
     Счет 64686473678894779589
@@ -24,13 +27,13 @@ def mask_account_card(name_number: list) -> str:
 #     print(mask_account_card(e))
 
 
-def get_date(date: str) -> str:
+def get_date(date: str) -> Any:
     """Принимает строку формата: 2024-03-11T02:26:18.671407
     И возвращает строку формата:  "ДД.ММ.ГГГГ"("11.03.2024")."""
-    if len(date) != 26:
-        raise ValueError("Неправильный формат")
-    else:
-        return date[8:10] + "." + date[5:7] + "." + date[:4]
-
+    try:
+        parsed_date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%f")
+        return parsed_date.strftime("%d.%m.%Y")
+    except ValueError as e:
+        raise ValueError(f"Неправильный формат даты: {e}")
 
 # print(get_date('2024-03-11T02:26:18.671407'))

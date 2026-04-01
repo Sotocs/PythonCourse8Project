@@ -1,11 +1,12 @@
 import pytest
+from pytest import CaptureFixture
 from scr import decorators
 
 
 # Тест: функция успешно выполняется и пишет в консоль
-def test_log_success(capsys):
+def test_log_success(capsys: CaptureFixture) -> None:
     @decorators.log()
-    def add(a, b):
+    def add(a: int, b: int) -> int:
         return a + b
 
     result = add(1, 2)
@@ -21,9 +22,9 @@ def test_log_success(capsys):
 
 
 # Тест: функция падает с ошибкой и логирует её
-def test_log_error(capsys):
+def test_log_error(capsys: CaptureFixture) -> None:
     @decorators.log()
-    def divide(a, b):
+    def divide(a: int, b: int) -> float:
         return a / b
 
     # Проверяем, что ошибка действительно возникает
@@ -37,9 +38,9 @@ def test_log_error(capsys):
 
 
 # Тест: проверяем, что имя функции не теряется
-def test_log_name():
+def test_log_name() -> None:
     @decorators.log()
-    def my_func():
+    def my_func() -> str:
         return "ok"
 
     assert my_func.__name__ == "my_func"

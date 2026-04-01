@@ -4,14 +4,14 @@ from scr.external_api import convertation
 
 
 # --- Тест для RUB ---
-def test_rub_returns_same():
+def test_rub_returns_same() -> None:
     transaction = {"operationAmount": {"amount": "1000", "currency": {"code": "RUB"}}}
     assert convertation(transaction) == 1000.0
 
 
 # --- Тест для USD с mock ---
 @patch("scr.external_api.requests.get")
-def test_usd_conversion(mock_get):
+def test_usd_conversion(mock_get: Mock) -> None:
     mock_response = Mock()
     mock_response.json.return_value = {"result": 9200.0}
     mock_response.raise_for_status = Mock()
@@ -25,7 +25,7 @@ def test_usd_conversion(mock_get):
 
 # --- Тест для EUR с mock ---
 @patch("scr.external_api.requests.get")
-def test_eur_conversion(mock_get):
+def test_eur_conversion(mock_get: Mock) -> None:
     mock_response = Mock()
     mock_response.json.return_value = {"result": 11000.0}
     mock_response.raise_for_status = Mock()
@@ -37,7 +37,7 @@ def test_eur_conversion(mock_get):
 
 
 # --- Тест неизвестной валюты ---
-def test_unknown_currency_raises():
+def test_unknown_currency_raises() -> None:
     transaction = {"operationAmount": {"amount": "100", "currency": {"code": "GBP"}}}
     with pytest.raises(ValueError):
         convertation(transaction)

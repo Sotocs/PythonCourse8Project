@@ -41,7 +41,7 @@ from scr import processing
         ),
     ],
 )
-def test_filter_by_state_2(list_of_dicts, argument, expected):
+def test_filter_by_state_2(list_of_dicts: list[dict], argument: str, expected: list[dict])  -> None:
     assert processing.filter_by_state(list_of_dicts, argument) == expected
 
 
@@ -96,12 +96,12 @@ def test_filter_by_state_2(list_of_dicts, argument, expected):
         ),
     ],
 )
-def test_sort_by_date(list_of_dicts, sort_type_forward, expected):
+def test_sort_by_date(list_of_dicts: list[dict], sort_type_forward: bool, expected: list[dict]) -> None:
     result = processing.sort_by_date(list_of_dicts, sort_type_forward)
     assert result == expected
 
 
-def test_missing_date_key():
+def test_missing_date_key() -> None:
     """Тест: словарь без ключа 'date' должен вызвать KeyError."""
     data = [{"id": 1, "name": "test"}]
     with pytest.raises(KeyError):
