@@ -1,6 +1,6 @@
-from typing import Union
 import logging
 import os
+from typing import Union
 
 log_dir = "../logs"
 os.makedirs(log_dir, exist_ok=True)
@@ -8,10 +8,7 @@ log_file = os.path.join(log_dir, "masks.log")
 
 logger = logging.getLogger(__name__)
 handler = logging.FileHandler(log_file, mode="w", encoding="utf-8")
-handler.setFormatter(logging.Formatter(
-    "%(asctime)s %(name)s %(levelname)s: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-))
+handler.setFormatter(logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S"))
 logger.addHandler(handler)
 
 

@@ -1,5 +1,6 @@
 import pytest
 from pytest import CaptureFixture
+
 from scr import decorators
 
 

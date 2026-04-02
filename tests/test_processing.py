@@ -1,4 +1,5 @@
 import pytest
+
 from scr import processing
 
 
@@ -41,7 +42,7 @@ from scr import processing
         ),
     ],
 )
-def test_filter_by_state_2(list_of_dicts: list[dict], argument: str, expected: list[dict])  -> None:
+def test_filter_by_state_2(list_of_dicts: list[dict], argument: str, expected: list[dict]) -> None:
     assert processing.filter_by_state(list_of_dicts, argument) == expected
 
 

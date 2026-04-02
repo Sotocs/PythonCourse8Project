@@ -1,9 +1,9 @@
-from unittest.mock import patch, mock_open
 import json
+from unittest.mock import mock_open, patch
+
 import pandas as pd
 
 from scr.utils import load_transactions
-
 
 # =========================
 # JSON ТЕСТЫ
