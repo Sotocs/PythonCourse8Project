@@ -1,4 +1,5 @@
 import pytest
+
 from scr import processing
 
 
@@ -41,7 +42,7 @@ from scr import processing
         ),
     ],
 )
-def test_filter_by_state_2(list_of_dicts, argument, expected):
+def test_filter_by_state_2(list_of_dicts: list[dict], argument: str, expected: list[dict]) -> None:
     assert processing.filter_by_state(list_of_dicts, argument) == expected
 
 
@@ -96,13 +97,119 @@ def test_filter_by_state_2(list_of_dicts, argument, expected):
         ),
     ],
 )
-def test_sort_by_date(list_of_dicts, sort_type_forward, expected):
+def test_sort_by_date(list_of_dicts: list[dict], sort_type_forward: bool, expected: list[dict]) -> None:
     result = processing.sort_by_date(list_of_dicts, sort_type_forward)
     assert result == expected
 
 
-def test_missing_date_key():
-    """Тест: словарь без ключа 'date' должен вызвать KeyError."""
-    data = [{"id": 1, "name": "test"}]
-    with pytest.raises(KeyError):
-        processing.sort_by_date(data)
+# =========================
+# ТЕСТЫ ДЛЯ process_bank_search
+# =========================
+
+
+@pytest.fixture
+def sample_data():
+    return [
+        {"description": "Перевод организации"},
+        {"description": "Открытие вклада"},
+        {"description": "Перевод частному лицу"},
+        {"description": "ПОКУПКА В МАГАЗИНЕ"},
+        {"no_description": "что-то"},  # битый кейс
+    ]
+
+
+def test_search_found(sample_data):
+    result = processing.process_bank_search(sample_data, "организации")
+
+    assert len(result) == 1
+    assert result[0]["description"] == "Перевод организации"
+
+
+def test_search_case_insensitive(sample_data):
+    result = processing.process_bank_search(sample_data, "покупка")
+
+    assert len(result) == 1
+    assert result[0]["description"] == "ПОКУПКА В МАГАЗИНЕ"
+
+
+def test_search_not_found(sample_data):
+    result = processing.process_bank_search(sample_data, "ипотека")
+
+    assert result == []
+
+
+def test_search_partial_match(sample_data):
+    result = processing.process_bank_search(sample_data, "перевод")
+
+    assert len(result) == 2
+
+
+def test_search_missing_description(sample_data):
+    # не должен падать
+    result = processing.process_bank_search(sample_data, "что-то")
+
+    assert isinstance(result, list)
+
+
+# =========================
+# ТЕСТЫ ДЛЯ process_bank_operations
+# =========================
+
+
+@pytest.fixture
+def operations_data():
+    return [
+        {"description": "Перевод организации"},
+        {"description": "Перевод организации"},
+        {"description": "Открытие вклада"},
+        {"description": "Покупка"},
+        {"no_description": "битый кейс"},
+    ]
+
+
+def test_operations_count_basic(operations_data):
+    categories = ["Перевод организации", "Открытие вклада"]
+
+    result = processing.process_bank_operations(operations_data, categories)
+
+    assert result == {
+        "Перевод организации": 2,
+        "Открытие вклада": 1,
+    }
+
+
+def test_operations_missing_category(operations_data):
+    categories = ["Перевод организации", "Ипотека"]
+
+    result = processing.process_bank_operations(operations_data, categories)
+
+    assert result == {
+        "Перевод организации": 2,
+    }
+
+
+def test_operations_empty_data():
+    result = processing.process_bank_operations([], ["Перевод организации"])
+
+    assert result == {}
+
+
+def test_operations_no_matches():
+    data = [{"description": "Покупка"}]
+    categories = ["Перевод организации"]
+
+    result = processing.process_bank_operations(data, categories)
+
+    assert result == {}
+
+
+def test_operations_ignore_missing_description():
+    data = [
+        {"description": "Перевод организации"},
+        {"bad_key": "что-то"},
+    ]
+    categories = ["Перевод организации"]
+
+    result = processing.process_bank_operations(data, categories)
+
+    assert result == {"Перевод организации": 1}

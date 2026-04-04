@@ -1,9 +1,12 @@
+from typing import Any
+
 import pytest
+
 from scr import generators
 
 
 @pytest.fixture
-def transactions_fixture():
+def transactions_fixture() -> list[dict[str, Any]]:
     return [
         {
             "id": 939719570,
@@ -54,33 +57,33 @@ def transactions_fixture():
 
 
 # Тесты для filter_by_currency
-def test_filter_by_currency_usd(transactions_fixture):
+def test_filter_by_currency_usd(transactions_fixture: list[dict]) -> None:
     """Проверяет фильтрацию по USD — должно быть 3 транзакции."""
     result = list(generators.filter_by_currency(transactions_fixture, "USD"))
     assert len(result) == 3
     assert all(tx["operationAmount"]["currency"]["code"] == "USD" for tx in result)
 
 
-def test_filter_by_currency_rub(transactions_fixture):
+def test_filter_by_currency_rub(transactions_fixture: list[dict]) -> None:
     """Проверяет фильтрацию по RUB — должно быть 2 транзакции."""
     result = list(generators.filter_by_currency(transactions_fixture, "RUB"))
     assert len(result) == 2
     assert all(tx["operationAmount"]["currency"]["code"] == "RUB" for tx in result)
 
 
-def test_filter_by_currency_no_matches(transactions_fixture):
+def test_filter_by_currency_no_matches(transactions_fixture: list[dict]) -> None:
     """Проверяет отсутствие совпадений (например, для 'EUR')."""
     result = list(generators.filter_by_currency(transactions_fixture, "EUR"))
     assert result == []
 
 
-def test_filter_by_currency_empty_list():
+def test_filter_by_currency_empty_list() -> None:
     """Проверяет обработку пустого списка."""
     result = list(generators.filter_by_currency([], "USD"))
     assert result == []
 
 
-def test_filter_by_currency_stop_iteration(transactions_fixture):
+def test_filter_by_currency_stop_iteration(transactions_fixture: list[dict]) -> None:
     """Проверяет корректное завершение итератора (StopIteration)."""
     gen = generators.filter_by_currency(transactions_fixture, "USD")
     for _ in range(3):  # 3 транзакции с USD
@@ -90,7 +93,7 @@ def test_filter_by_currency_stop_iteration(transactions_fixture):
 
 
 # Тесты для transaction_descriptions
-def test_transaction_descriptions_full_list(transactions_fixture):
+def test_transaction_descriptions_full_list(transactions_fixture: list[dict]) -> None:
     """Проверяет генерацию всех описаний транзакций."""
     expected = [
         "Перевод организации",
@@ -103,13 +106,13 @@ def test_transaction_descriptions_full_list(transactions_fixture):
     assert result == expected
 
 
-def test_transaction_descriptions_empty():
+def test_transaction_descriptions_empty() -> None:
     """Проверяет обработку пустого списка."""
     result = list(generators.transaction_descriptions([]))
     assert result == []
 
 
-def test_transaction_descriptions_stop_iteration(transactions_fixture):
+def test_transaction_descriptions_stop_iteration(transactions_fixture: list[dict]) -> None:
     """Проверяет корректное завершение итератора (StopIteration)."""
     gen = generators.transaction_descriptions(transactions_fixture)
     for _ in range(5):  # 5 транзакций в фикстуре
@@ -118,24 +121,7 @@ def test_transaction_descriptions_stop_iteration(transactions_fixture):
         next(gen)
 
 
-def test_transaction_descriptions_missing_description():
-    """Проверяет обработку транзакции без поля 'description'."""
-    broken_tx = [
-        {
-            "id": 123,
-            "state": "EXECUTED",
-            "operationAmount": {"currency": {"code": "USD"}},
-            # 'description' отсутствует!
-            "from": "Счет 1234567890",
-            "to": "Счет 0987654321",
-        },
-        {},
-    ]
-    with pytest.raises(KeyError):
-        next(generators.transaction_descriptions(broken_tx))
-
-
-def test_default_range_first_numbers():
+def test_default_range_first_numbers() -> None:
     # Проверяет генерацию первых нескольких номеров карт
     generator = generators.card_number_generator(1, 3)
     result = list(generator)

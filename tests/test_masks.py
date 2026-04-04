@@ -4,7 +4,7 @@ from scr import masks
 
 
 @pytest.fixture()
-def card_name_base():
+def card_name_base() -> int:
     return 1234564323133456
 
 
@@ -16,11 +16,11 @@ def card_name_base():
         ("1234 3443 0000 3776", "1234 34** **** 3776"),
     ],
 )
-def test_add(card, expected):
+def test_add(card: str, expected: str) -> None:
     assert masks.get_mask_card_number(card) == expected
 
 
-def test_get_mask_card_number(card_name_base):
+def test_get_mask_card_number(card_name_base: str) -> None:
     assert masks.get_mask_card_number(card_name_base) == "1234 56** **** 3456"
     assert masks.get_mask_card_number("1234 5643 2313 3456") == "1234 56** **** 3456"
     with pytest.raises(ValueError) as exc_info:
@@ -37,7 +37,7 @@ def test_get_mask_card_number(card_name_base):
         print(exc_info)
 
 
-def test_get_mask_account(card_name_base):
+def test_get_mask_account(card_name_base: str) -> None:
     assert masks.get_mask_account(card_name_base) == "**** 3456"
     assert masks.get_mask_account("1234 43443333 3456") == "**** 3456"
     with pytest.raises(ValueError) as exc_info:
