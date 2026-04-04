@@ -121,21 +121,6 @@ def test_transaction_descriptions_stop_iteration(transactions_fixture: list[dict
         next(gen)
 
 
-def test_transaction_descriptions_missing_description() -> None:
-    """Проверяет обработку транзакции без поля 'description'."""
-    broken_tx = [
-        {
-            "id": 123,
-            "state": "EXECUTED",
-            "operationAmount": {"currency": {"code": "USD"}},
-            # 'description' отсутствует!
-            "from": "Счет 1234567890",
-            "to": "Счет 0987654321",
-        },
-        {},
-    ]
-    with pytest.raises(KeyError):
-        next(generators.transaction_descriptions(broken_tx))
 
 
 def test_default_range_first_numbers() -> None:

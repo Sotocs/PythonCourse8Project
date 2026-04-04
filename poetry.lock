@@ -225,6 +225,16 @@ files = [
 ]
 
 [[package]]
+name = "counter"
+version = "1.0.0"
+description = "Counter package defines the \"counter.Counter\" class similar to bags or multisets in other languages."
+optional = false
+python-versions = "*"
+files = [
+    {file = "Counter-1.0.0.tar.gz", hash = "sha256:9e008590e360936a66c98e1a01e7a9a0ecf6af19cc588107121f5fb4613bb60c"},
+]
+
+[[package]]
 name = "flake8"
 version = "7.3.0"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -897,4 +907,4 @@ zstd = ["backports-zstd (>=1.0.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.14"
-content-hash = "50d0b1b506f84442fdde4453a8eeaae68dd3f32b160627081b0f8c58a02c531a"
+content-hash = "65d1e6dd1c6eff54ef3bba4835a29140729b1feac9ca6023a024b0588e113912"

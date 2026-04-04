@@ -8,8 +8,12 @@ def filter_by_currency(list_of_dicts: list[dict], currency: str) -> Generator:
     транзакции с указанной валютой (например, USD).
     """
     for e in list_of_dicts:
-        if e["operationAmount"]["currency"]["code"] == currency:
-            yield e
+        try:
+            if e["operationAmount"]["currency"]["code"] == currency:
+                yield e
+        except (KeyError, TypeError):
+            # Пропускаем транзакции с некорректной структурой
+            continue
 
 
 def transaction_descriptions(list_of_dicts: list[dict]) -> Generator:
@@ -19,7 +23,8 @@ def transaction_descriptions(list_of_dicts: list[dict]) -> Generator:
     генерирует описание каждой из операций.
     """
     for e in list_of_dicts:
-        yield e["description"]
+        if "description" in e:
+            yield e["description"]
 
 
 def card_number_generator(a: int, b: int) -> Generator:
