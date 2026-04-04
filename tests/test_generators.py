@@ -121,8 +121,6 @@ def test_transaction_descriptions_stop_iteration(transactions_fixture: list[dict
         next(gen)
 
 
-
-
 def test_default_range_first_numbers() -> None:
     # Проверяет генерацию первых нескольких номеров карт
     generator = generators.card_number_generator(1, 3)

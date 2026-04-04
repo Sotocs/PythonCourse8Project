@@ -106,6 +106,7 @@ def test_sort_by_date(list_of_dicts: list[dict], sort_type_forward: bool, expect
 # ТЕСТЫ ДЛЯ process_bank_search
 # =========================
 
+
 @pytest.fixture
 def sample_data():
     return [
@@ -153,6 +154,7 @@ def test_search_missing_description(sample_data):
 # =========================
 # ТЕСТЫ ДЛЯ process_bank_operations
 # =========================
+
 
 @pytest.fixture
 def operations_data():
